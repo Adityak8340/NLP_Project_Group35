@@ -147,7 +147,7 @@ def main():
     load_dotenv()
     # groq_api = os.getenv("GROQ_API_KEY")
     # client = Groq(api_key="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")
-    client=OpenAI(api_key="sk-7zWCl-ab2-or6uvZmeEB2pjT8COrAu0Q6JJrQJE76TT3BlbkFJz8V3yBaXiLNwSl5TbyQAzot9N_apWTAMbwiWwDim4A")
+    client=OpenAI(api_key="")
     
     try:
         # Read the dataset
