@@ -1,60 +1,85 @@
-#### Name- Aditya Kumar Tiwari
-#### Roll no.- MSA23023
+| Sprint  | Activities                                                                                                  | Assignees                                         | TimeLine (Days) |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 0| Travel to Dubai                                                                                             | Architect Engineer, Business Analyst, Scrum Master| 2                |
+|         | Define SRS (Software Requirements Specification)                                                            | Architect Engineer, Business Analyst, Scrum Master| 5                |
+|         | Develop Project Plan                                                                                        | Architect Engineer, Business Analyst, Scrum Master| 3                |
+|         | Establish Oracle Connectivity                                                                               | Architect Engineer, Business Analyst, Scrum Master| 4                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 1| UI/UX Design for Mobile and Website                                                                         | UI/UX Engineers                                   | 5                |
+|         | Initial Backend Development: Query Classification, Intent Recognition, Routing Logic                        | Backend Team                                      | 6                |
+|         | Voice Recognition Model Setup for Language and Accent                                                       | AI Team                                           | 7                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 2| Develop User Authentication System                                                                          | Backend Team, UI/UX Engineers                     | 4                |
+|         | Build Query Input Interface                                                                                 | Backend Team, UI/UX Engineers                     | 3                |
+|         | Similar Question Suggestions System                                                                         | AI Team                                           | 5                |
+|         | Model Setup and API Integration                                                                             | AI Team, Backend Team                             | 6                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 3| Feedback Collection Interface and User Rating Module                                                        | UI/UX Engineers, Backend Team                     | 4                |
+|         | Integrate Whisper Model for Voice-to-Text                                                                   | AI Team                                           | 6                |
+|         | Processing Status Display                                                                                   | UI/UX Engineers, Backend Team                     | 3                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 4| Language Detection and Accent Handling Modules                                                              | AI Team                                           | 5                |
+|         | Document Search and Search Optimization                                                                     | Backend Team                                      | 6                |
+|         | Data Lookup and Query Translation                                                                           | Backend Team                                      | 5                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 5| Relevance Ranking and Context Extraction (from chat history, user profile, and query intent)               | AI Team, Backend Team                             | 7                |
+|         | Text Output Formatting and Validation                                                                       | UI/UX Engineers, Backend Team                     | 4                |
+|         | Model Selection and Prompt Fine-tuning for Response Generation                                              | AI Team                                           | 5                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 6| Caching System and Load Balancing for Performance Optimization                                              | Backend Team                                      | 6                |
+|         | Data Source Integration with Vector Database and Document Processing (Text Extraction, Metadata, Embedding) | AI Team, Database Engineers                       | 7                |
+|         | Backup and Index Optimization in Database Management                                                        | Database Engineers                                | 5                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 7| Oracle ERP API Development and Endpoint Creation with Authentication                                        | Backend Team                                      | 6                |
+|         | Real-Time Data Synchronization and Validation                                                               | Backend Team, Database Engineers                  | 5                |
+|         | Issue Tracking System for Feedback and Monitoring                                                           | Backend Team, QA Team                             | 4                |
+|---------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------|------------------|
+| Sprint 8| Security and Compliance Implementation: User Authentication, API Security, Token Management                | Security Team, Backend Team                       | 6                |
+|         | Data Protection Measures: Encryption, Access Control, Audit Logging                                         | Security Team, Compliance Team                    | 5                |
+|         | HR and UAE Compliance for Data Handling and AI Ethics                                                       | Compliance Team, Business Analyst                 | 5                |
 
 
-# Named Enitity Reconition usin BERT 
 
-### Descprition
+# Team Composition
 
-Named Entitiy Recognition (NER) is all about recognisin the big, special words in text. Like names, or places, or what not. With BERT, we train on like, CoNNL dataset? It has all these words all lined up with labels so model can learn better. 
-
-1. **Tokenize Text**
-    - You tokenize it, means the words get broken down to tiny pieces BERT gets. Like, it can split one word into few. But they gotta be aligned with labels. Align it using `align_targets` func. 
-
-2. **Model Set-up**
-    - Model prepped up with tokens, types, etc., and it gets to recognizng. Classify tokens as the entities type.
-
-3. **Training**
-    - Train with epochs on the train and validation datasets, to get best accuracy, and then test for predicted labels to real ones.
-
-4. **Evalute**
-    - Use Precision, Recall and F1-Scores. Good numbers mean BERT can spot named entites well. If not, oh well need better data.
-
-### Libraries
-
-- `load_dataset`: get datasets, `pandas`, `numpy` for manipulation.
-- **Important Functions**
-    - `AutoTokenizer`, `load_metric`, `SparseCategoricalCrossentropy`: good for trainin purposes
-
-### Data Loadin
-
-    - CoNNL dataset is usually for NER. Loading with `load_dataset('conll2003')`
-
-#### Model Checkpoint
-    - BERT base case used, i.e. case-sensitive tokens, better for text w/ upper-lower case mix
-
-### Tokenizations
-
-    - Original Tokens to New Tokenized ones, gotta print and see if labels match up
-
-#### Purpose:
-    - Call `align_targets` to check aligned with human-readable labels
-    - Outputs list of words, categories, and their labels 
-
-### Training Prep
-
-1. *Create Training Dataset*: Proper format, with `collate_fn` 
-2. *Create Validation Dataset*: Same setup for validation data
-3. *ID Mappings*: IDs to Labels map for model
-
-#### Loss function
-
-    - Compute loss function if tokens miss labels, ignore the empty or -100 classes
-
-### Predict & Results 
-
-1. Test dataset on unseen data, and see accuracy using:
-    - `eval_metric` like F1, precision, etc., if high, model good; low, need more train data
-2. Print Results with token IDs to actual word predictions.
+| Role                   | Total Efforts (hours) |
+|------------------------|-----------------------|
+| Project Manager        | 320                   |
+| Technical Architect    | 200                   |
+| Senior Business Analyst| 160                   |
+| Developer              | 300                   |
+| QA Engineer            | 180                   |
 
 ---
+
+# Sprint Plan
+
+| Sprint     | Duration (days) | Focus/Activities                                                                                 |
+|------------|-----------------|--------------------------------------------------------------------------------------------------|
+| Sprint 0   | 10              | Travel to Dubai, define SRS, develop project plan, and establish Oracle connectivity            |
+| Sprint 1   | 10              | Core development and integration tasks                                                          |
+| Sprint 2   | 10              | Feature completion and integration testing                                                      |
+| Sprint 3   | 10              | Continue development and feature enhancements                                                   |
+| Sprint 4   | 10              | Mid-project review and testing                                                                  |
+| Sprint 5   | 10              | Further development, address feedback                                                           |
+| Sprint 6   | 10              | Feature finalization and comprehensive testing                                                  |
+| Sprint 7   | 10              | User acceptance testing (UAT) preparation                                                       |
+| Sprint 8   | 10              | Final UAT and feedback resolution                                                               |
+| Sprint 9   | 10              | Wrap-up, documentation, and final deployment                                                    |
+
+---
+
+# Effort Allocation
+
+| Sprint     | Project Manager (hours) | Technical Architect (hours) | Senior Business Analyst (hours) | Developer (hours) | QA Engineer (hours) |
+|------------|--------------------------|-----------------------------|---------------------------------|--------------------|----------------------|
+| Sprint 0   | 40                       | 80                          | 80                              | 0                  | 0                    |
+| Sprint 1   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 2   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 3   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 4   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 5   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 6   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 7   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 8   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
+| Sprint 9   | 40                       | 22.22                       | 17.78                           | 33.33              | 20                   |
