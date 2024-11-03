@@ -20,7 +20,7 @@ graph = Neo4jGraph(
     username=neo4j_username,
     password=neo4j_password,
 )
-llm = ChatGroq(groq_api_key=groq_api_key, model_name="Gemma2-9b-It")
+llm = ChatGroq(groq_api_key=groq_api_key, model_name="llama3-8b-8192")
 llm_transformer = LLMGraphTransformer(llm=llm)
 
 # Create the GraphCypherQAChain
