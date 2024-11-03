@@ -1,14 +1,6 @@
-import os
-from dotenv import load_dotenv
-from langchain_groq import ChatGroq
-
-load_dotenv()
-groq_api_key = os.getenv("groq_api_key")
-
-llm = ChatGroq(groq_api_key=groq_api_key, model_name="llama3-8b-8192")
+from graph import llm
 
 def rephrase_query_for_schema(user_query):
-    # Prompt to rephrase the query with a focus on matching schema elements
     prompt = (
     f"You are an expert at refining and rephrasing user queries to ensure grammatical accuracy and alignment with a specific Neo4j database schema. "
     f"Please follow these steps when rephrasing the input query:\n\n"
