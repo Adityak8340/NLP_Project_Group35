@@ -103,4 +103,7 @@ Werkzeug==3.0.4
 wordcloud==1.9.3
 wrapt==1.16.0
 python-dotenv==1.7.0
+<<<<<<< HEAD
+>>>>>>> 980b245efbeede77df8fec6418cd4d89eab2afa5
+=======
 >>>>>>> 980b245efbeede77df8fec6418cd4d89eab2afa5
