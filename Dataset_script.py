@@ -1,19 +1,25 @@
-from groq import Groq
-from dotenv import load_dotenv
+from groq import Groq  # Import Groq library for interacting with the Groq API
+from dotenv import load_dotenv  # Import dotenv to load environment variables
 import os
 import json
-import pandas as pd
-from tqdm import tqdm
-from openai import OpenAI
+import pandas as pd  # Import pandas for handling data
+from tqdm import tqdm  # Import tqdm for progress bar
+from openai import OpenAI  # Import OpenAI library for chat completions
 
-load_dotenv()
-
-
+load_dotenv()  # Load environment variables from a .env file
 
 def get_columns(description, client):
     """
-    Extract specific information from CVE description using Groq API
+    Extract specific information from a vulnerability description using the Groq API.
+
+    Parameters:
+    - description: str, the vulnerability description text
+    - client: OpenAI client object to send the prompt to the OpenAI API
+
+    Returns:
+    - extracted_info: dict, extracted fields as per the specified JSON format
     """
+    
     prompt = f"""
     Analyze the following vulnerability description and extract specific information.
     For each field, extract information ONLY if it's explicitly mentioned or can be clearly inferred from the description.
@@ -36,24 +42,10 @@ def get_columns(description, client):
     - Vendor: Extract the vendor name if mentioned, NA if not specified
 
     Return ONLY the JSON object, nothing else.
-    
-    Example good response for "Buffer overflow in Apache HTTP Server 2.4.2 allows remote attackers to execute arbitrary code":
-    {{
-        "Operating_System": "NA",
-        "Software_Component": "Apache HTTP Server",
-        "Version": "2.4.2",
-        "Impact": "arbitrary code execution",
-        "Affected_Hardware": "NA",
-        "Network_Requirements": "remote",
-        "Affected_Protocols": "HTTP",
-        "Authentication_Required": "NA",
-        "Privileges_Required": "NA",
-        "User_Interaction_Required": "NA",
-        "Vendor": "Apache"
-    }}
     """
-    
+
     try:
+        # Send the prompt to the OpenAI API and get the response
         chat_completion = client.chat.completions.create(
             messages=[
                 {
@@ -68,14 +60,14 @@ def get_columns(description, client):
         
         response_text = chat_completion.choices[0].message.content
         
-
+        # Parse the response as JSON if it contains JSON format
         json_str = response_text.strip()
         if json_str.startswith('```json'):
-            json_str = json_str[7:-3]  
+            json_str = json_str[7:-3]  # Remove markdown format indicators
         
-        extracted_info = json.loads(json_str)
-        
-    
+        extracted_info = json.loads(json_str)  # Load JSON string to a dictionary
+
+        # Define required fields for extracted information
         valid_fields = [
             "Operating_System", "Software_Component", "Version", "Impact",
             "Affected_Hardware", "Network_Requirements", "Affected_Protocols",
@@ -83,7 +75,7 @@ def get_columns(description, client):
             "User_Interaction_Required", "Vendor"
         ]
         
-        
+        # Fill missing fields with "NA"
         for field in valid_fields:
             if field not in extracted_info or not extracted_info[field]:
                 extracted_info[field] = "NA"
@@ -93,6 +85,7 @@ def get_columns(description, client):
         return extracted_info
         
     except Exception as e:
+        # Print error and return default "NA" values if processing fails
         print(f"Error processing description: {e}")
         return {field: "NA" for field in [
             "Operating_System", "Software_Component", "Version", "Impact",
@@ -103,9 +96,18 @@ def get_columns(description, client):
 
 def process_dataset(data, client, batch_size=5):
     """
-    Process the dataset in batches and add new columns
+    Process the dataset in batches and add new columns with extracted information.
+
+    Parameters:
+    - data: DataFrame containing the dataset with 'DESCRIPTION' column
+    - client: OpenAI client object
+    - batch_size: int, size of each batch (default: 5)
+
+    Returns:
+    - data: DataFrame with added columns for extracted information
     """
 
+    # Define new columns to store extracted information
     new_columns = [
         "Operating_System", "Software_Component", "Version", "Impact",
         "Affected_Hardware", "Network_Requirements", "Affected_Protocols",
@@ -113,60 +115,63 @@ def process_dataset(data, client, batch_size=5):
         "User_Interaction_Required", "Vendor"
     ]
     
+    # Initialize new columns with "NA" as default values
     for col in new_columns:
         data[col] = "NA"
     
-
     print("Processing descriptions...")
     for idx in tqdm(data.index):
         try:
-            description = data.loc[idx, 'DESCRIPTION']
+            description = data.loc[idx, 'DESCRIPTION']  # Get description text
             
-        
+            # Extract information from description
             extracted_info = get_columns(description, client)
             
-            
+            # Update DataFrame with extracted information
             for col in new_columns:
                 data.loc[idx, col] = extracted_info.get(col, "NA")
             
-
+            # Save progress to an Excel file every 100 rows
             if idx > 0 and idx % 100 == 0:
                 data.to_excel("Global_Dataset_Updated.xlsx", index=False)
                 print(f"\nSaved progress at row {idx}")
                 
         except Exception as e:
+            # Log any errors during row processing
             print(f"\nError processing row {idx}: {e}")
             continue
     
-    
+    # Save final processed dataset to an Excel file
     data.to_excel("Global_Dataset_Updated.xlsx", index=False)
     return data
 
 def main():
+    """
+    Main function to load the dataset, process it, and save results to an Excel file.
+    """
     
-    load_dotenv()
-    # groq_api = os.getenv("GROQ_API_KEY")
-    # client = Groq(api_key="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")
-    client=OpenAI(api_key="")
+    load_dotenv()  # Load environment variables from .env file
+    client = OpenAI(api_key="")  # Initialize OpenAI client with API key
     
     try:
-        # Read the dataset
+        # Read the dataset from a CSV file
         data = pd.read_csv("Training_data.csv")
-        data=data[4800:]
+        data = data[4800:] 
         print(f"Loaded dataset with {len(data)} rows")
         
-        # Process the dataset
+        # Process the dataset and extract information
         updated_data = process_dataset(data, client)
         
         print("\nProcessing completed!")
         print(f"Updated dataset saved to 'Global_Dataset_Updated.xlsx'")
         
-        # Display sample of processed data
+        # Display a sample of processed data
         print("\nSample of processed data:")
         print(updated_data.head(2))
         
     except Exception as e:
+        # Catch and print any errors during processing
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    main()
+    main()  # Run the main function
