@@ -2,56 +2,18 @@
 #### System Architecture Flowchart
 
 ```mermaid
-graph TB
-    classDef setup fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef config fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef data fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    classDef query fill:#fff3e0,stroke:#e65100,stroke-width:2px
+graph TD
+    A[User Query] --> B[GraphCypherQAChain]
+    B --> C[LLM Translator]
+    B --> D[Neo4j Database]
+    B --> E[LLM Response Generator]
+    
+    C -->|Cypher Query| D
+    D -->|Graph Data| E
+    E -->|Natural Language| F[Response]
 
-    %% Environment Setup
-    S[Start] --> E[Environment Setup]
-    E -->|1| E1[Python & VSCode]
-    E -->|2| E2[Virtual Environment]
-    E -->|3| E3[Dependencies Installation]
-    
-    %% Database Setup
-    E3 --> D[Database Configuration]
-    D -->|1| D1[Create Neo4j AuraDB Instance]
-    D -->|2| D2[Store Credentials]
-    D -->|3| D3[Test Connection]
-    
-    %% LLM Integration
-    D3 --> L[LLM Setup]
-    L -->|1| L1[Configure Groq API]
-    L -->|2| L2[Initialize LangChain]
-    L -->|3| L3[Setup Graph QA Chain]
-    
-    %% Data Loading
-    L3 --> M[Data Management]
-    M -->|1| M1[Define Schema]
-    M -->|2| M2[Create Constraints]
-    M -->|3| M3[Load CSV Data]
-    M -->|4| M4[Verify Data Load]
-    
-    %% Query System
-    M4 --> Q[Query Processing]
-    Q -->|1| Q1[Natural Language Input]
-    Q -->|2| Q2[Convert to Cypher]
-    Q -->|3| Q3[Execute Query]
-    Q -->|4| Q4[Format Results]
-    Q4 --> END[End]
-
-    %% Styling
-    class E,E1,E2,E3 setup
-    class D,D1,D2,D3 config
-    class M,M1,M2,M3,M4 data
-    class Q,Q1,Q2,Q3,Q4 query
-
-    %% Connections
-    E1 & E2 & E3 --> D
-    D1 & D2 & D3 --> L
-    L1 & L2 & L3 --> M
-    M1 & M2 & M3 & M4 --> Q
+    G[CVE Data] -->|Load| D
+    H[Protocol Data] -->|Load| D
 
 ```
 ---
