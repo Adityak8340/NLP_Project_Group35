@@ -1,66 +1,128 @@
-#### Name- Aditya Kumar Tiwari
-#### Roll no.- MSA23023
+## Neo4j Graph Database Setup and Integration Guide
+#### System Architecture Flowchart
 
+```mermaid
+graph TB
+    classDef setup fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef config fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef data fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef query fill:#fff3e0,stroke:#e65100,stroke-width:2px
 
+    %% Environment Setup
+    S[Start] --> E[Environment Setup]
+    E -->|1| E1[Python & VSCode]
+    E -->|2| E2[Virtual Environment]
+    E -->|3| E3[Dependencies Installation]
+    
+    %% Database Setup
+    E3 --> D[Database Configuration]
+    D -->|1| D1[Create Neo4j AuraDB Instance]
+    D -->|2| D2[Store Credentials]
+    D -->|3| D3[Test Connection]
+    
+    %% LLM Integration
+    D3 --> L[LLM Setup]
+    L -->|1| L1[Configure Groq API]
+    L -->|2| L2[Initialize LangChain]
+    L -->|3| L3[Setup Graph QA Chain]
+    
+    %% Data Loading
+    L3 --> M[Data Management]
+    M -->|1| M1[Define Schema]
+    M -->|2| M2[Create Constraints]
+    M -->|3| M3[Load CSV Data]
+    M -->|4| M4[Verify Data Load]
+    
+    %% Query System
+    M4 --> Q[Query Processing]
+    Q -->|1| Q1[Natural Language Input]
+    Q -->|2| Q2[Convert to Cypher]
+    Q -->|3| Q3[Execute Query]
+    Q -->|4| Q4[Format Results]
+    Q4 --> END[End]
 
-# Word Sense Disambiguitiy Docs
+    %% Styling
+    class E,E1,E2,E3 setup
+    class D,D1,D2,D3 config
+    class M,M1,M2,M3,M4 data
+    class Q,Q1,Q2,Q3,Q4 query
 
-## Overview
+    %% Connections
+    E1 & E2 & E3 --> D
+    D1 & D2 & D3 --> L
+    L1 & L2 & L3 --> M
+    M1 & M2 & M3 & M4 --> Q
 
-WSD (Word Sense Disambiguation) tries to find correct word meanings. Techniques compare performance in **accuracy, precision, recall**, and **F1** score.
+```
+---
 
-### Techniques Covered
+## Technical Components
+### Core Technologies
+- Python 3.x
+- Neo4j DB (Cloud)
+- Groq LLM API
+- LangChain Framework
+- Visual Studio Code
 
-1. **Lesk Algorithm**: Checks words' meanings using dictionary definitions and context. Simple, but only average for big context.
-2. **MEMM (Max Entropy Markov Model)**: Uses POS, word surroundings, and synsets to learn meanings. Not always accurate if features aren’t ideal.
-3. **Baseline WSD**: Picks most common word sense always, works okay as a basic reference.
-4. **Decision Trees**: Tree-based to pick senses, based on context. Struggles with complex text.
-5. **Neural Networks**: Deep learning for complex patterns but need huge data.
+### Required Python Packages
+```python
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-groq==0.0.3
+neo4j==5.14.1
+python-dotenv==1.0.0
+```
+## Environment Setup Instructions
+```python
+# Create virtual environment
+python -m venv venv
 
-### Dataset & Process
+# Activate virtual environment (Windows)
+.\venv\Scripts\activate
 
-Compare each algorithm on dataset:
-- Take word, analyze for right meaning.
-- Model learns with features like word itself and context.
+# Install dependencies
+pip install -r requirements.txt
+```
 
-### Model Performnace 
+## Configuration Settings
 
-#### Lesk Algoritm
-- **Accuracy**: 50%
-- **Precision**: 50%
-- **Recall**: 50%
-- **F1 Score**: 50%
+```python
+# .env file structure
+NEO4J_URI="neo4j+s://xxxxx.databases.neo4j.io"
+NEO4J_USERNAME="neo4j"
+NEO4J_PASSWORD="your-password"
+GROQ_API_KEY="gsk_xxxxxx"
+```
 
-Shows Lesk is basic, good but only if context isn’t deep.
+ 
+## Implementation Steps
+1. Environment Setup
 
-#### MEMM
-- **Accuracy**: Low, about 20%
-- **Struggles**: Needs more features, possibly too simple for hard meanings.
+    - Install Python 3.x
+    - Setup VSCode with Python extension
+    - Create virtual environment
+    - Install required packages
+2. Neo4j Configuration
 
-#### Baseline WSD
-- **Accuracy**: 60%
-- **Best in frequent words**, but misses in rare meanings.
+    - Create Neo4j AuraDB instance
+    - Save connection credentials
+    - Test database connection
+    - Create constraints and indexes
+3. LLM Integration
 
-#### Decision Tree
-- **Accuracy**: Low, struggles like MEMM
-- **Precision**: 0.33 for common words
+    - Setup Groq account
+    - Configure API access
+    - Initialize LLM client
+    - Test query processing
+4. Data Pipeline
 
-#### Neural Network
-- **Accuracy**: 40%, does better than MEMM/Decision Trees
-- **Complexity helps but limited w/ training size**
+    - Prepare CSV data
+    - Define schema structure
+    - Create load queries
+    - Execute data import
+5. Query System
 
-## Analysis Points
-
-### Feature Impact
-Models depend heavy on features (POS, synsets). MEMM, Decision Trees weaker in complex situations, while Neural Nets manage well.
-
-### Data Size
-**More Data, Better Results**: Neural networks benefit most, small datasets weak.
-
-### Complexity
-Lesk: Simple but doesn’t do modern tricks.
-MEMM & Decision Trees: Try complex ideas, fail w/ tiny data.
-Neural: Best but data-hungry.
-
-## Conclusion
-Modern deep models do better but need good training sets and complex features. Future work could add larger sets or better feature extraction.
+    - Initialize GraphCypherQAChain
+    - Configure query templates
+    - Implement error handling
+    - Format response output
